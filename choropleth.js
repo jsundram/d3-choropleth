@@ -147,6 +147,7 @@ function __quantize(f, min, max)
     // original with more head room 
     var om = ~~(f * 7 / (data_mean + data_std));
 
+    // NB: Choose your scaling function here.
     return Math.max(min, Math.min(max, q));
 }
 
