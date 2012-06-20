@@ -1,2 +1,10 @@
-put your data in a file called data.json, and away you go.
+Put your data in a file called data.json, and away you go.
+
+data.json should have the same format as county_pop2010.json: 
+a dictionary of county ids mapped to numeric values.
+
 county_pop2010.json is provided so that you can divide your data by county population if desired.
+
+You may wish to edit choropleth.js on the lines marked "NB" to change:
+ * number format
+ * color scheme
