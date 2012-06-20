@@ -11,25 +11,14 @@ var km_to_m = 1.0 / 1.609344;
 // removed 0 here and hacked the legend code so that we don't have white + white borders
 var legend_min = {1:m, 2:m, 3:m, 4:m, 5:m, 6:m, 7:m, 8:m};
 var legend_max = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0};
-/*
-0.00 - 0.04%
-0.04 - 0.09%
-0.09 - 0.13%
-0.13 - 0.18%
-0.18 - 0.24%
-0.24 - 0.32%
-0.32 - 0.46%
-0.46 - 21.51%
-*/
-var legend_min = {1:0.0000, 2:0.0004, 3:0.0009, 4:0.0013, 5:0.0018, 6:0.0024, 7:0.0032, 8:0.0046};
-var legend_max = {1:0.0004, 2:0.0009, 3:0.0013, 4:0.0018, 5:0.0024, 6:0.0032, 7:0.0046, 8:0.2151};
-
 
 var percent = d3.format(".2%");
 var percentx = function(x) { return d3.format(".2f")(100*x);}
 var fixed = d3.format(".0f");
 var number = d3.format("n");
 var fixedx = function(x) { return d3.format(".0f")(km_to_m*x);}
+
+// NB: Change your number format function here:
 var format = percent;
 var formatx = percentx;
 
@@ -54,7 +43,7 @@ var states = svg.append("svg:g")
 
 var legend = svg.append("svg:g")
     .attr("id", "legend")
-    .attr("class", "Reds");
+    .attr("class", "Reds"); // NB: Change the color scheme here
 
 d3.json("us-counties.json", function(json) {
   counties.selectAll("path")
