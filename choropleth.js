@@ -36,7 +36,7 @@ var title = svg.append("svg:text")
 
 var counties = svg.append("svg:g")
     .attr("id", "counties")
-    .attr("class", "Reds");
+    .attr("class", "Reds"); // NB: Change color scheme here
 
 var states = svg.append("svg:g")
     .attr("id", "states");
