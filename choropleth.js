@@ -19,31 +19,46 @@ var number = d3.format("n");
 var fixedx = function(x) { return d3.format(".0f")(km_to_m*x);}
 
 // NB: Change your number format function here:
-var format = percent;
-var formatx = percentx;
+var format = number;
+var formatx = number;
 
-var path = d3.geo.path();
+
+var width = window.innerWidth;
+var height = window.innerHeight;
+
+var path = d3.geo.path(); // Can do scaling here
 
 var svg = d3.select("#chart")
   .append("svg:svg");
 
-var title = svg.append("svg:text")
+var label = svg.append("svg:text")
     .attr("text-anchor", "start")
     .attr("dx", 10)
     .attr("dy", 18)
-    .attr("class", "title")
+    .attr("class", "label")
     ;
 
-var counties = svg.append("svg:g")
-    .attr("id", "counties")
-    .attr("class", "Reds"); // NB: Change color scheme here
+var map = svg.append('svg:g')
+    .attr("transform", "translate(100, 100) scale(1)");
 
-var states = svg.append("svg:g")
-    .attr("id", "states");
+var counties = map.append("svg:g")
+    .attr("id", "counties")
+    .attr("class", "Blues") // NB: Change color scheme here
+
+var states = map.append("svg:g")
+    .attr("id", "states")
 
 var legend = svg.append("svg:g")
     .attr("id", "legend")
-    .attr("class", "Reds"); // NB: Change the color scheme here
+    .attr("class", "Blues"); // NB: Change the color scheme here
+
+var title = svg.append("svg:text")
+    .attr("text-anchor", "middle")
+    .attr("dx", map[0][0].parentElement.clientWidth / 2)
+    .attr("dy", 40)
+    .attr("class", "title")
+    ;
+title.text(document.title);
 
 d3.json("us-counties.json", function(json) {
   counties.selectAll("path")
@@ -119,12 +134,12 @@ function show(b)
         var s = counties.selectAll("path").filter(function(g){return g.id == d.id;});
         if (b)
         {
-            title.text(county_codes[d.id] + ": " + format(data[d.id] !== undefined ? data[d.id] : 0));
+            label.text(county_codes[d.id] + ": " + format(data[d.id] !== undefined ? data[d.id] : 0));
             s.attr("class", "highlight");//"q0-9"
         }
         else
         {
-            title.text("");
+            label.text("");
             s.attr("class", quantize);
         }
     }
