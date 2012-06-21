@@ -19,8 +19,8 @@ var number = d3.format("n");
 var fixedx = function(x) { return d3.format(".0f")(km_to_m*x);}
 
 // NB: Change your number format function here:
-var format = number;
-var formatx = number;
+var format = percent;
+var formatx = percentx;
 
 
 var width = window.innerWidth;
@@ -99,11 +99,10 @@ d3.json("data.json", function(json) {
 
 function make_legend()
 {
-    if (!data)
+    var mins = get_values(legend_min);
+    if (!data || mins[1] == m)
         return;
 
-    // populate legend
-    var mins = get_values(legend_min);
     legend.selectAll("path")
             .data(mins)
         .enter().append("svg:rect")
