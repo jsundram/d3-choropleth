@@ -13,10 +13,10 @@ var legend_min = {1:m, 2:m, 3:m, 4:m, 5:m, 6:m, 7:m, 8:m};
 var legend_max = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0};
 
 var percent = d3.format(".2%");
-var percentx = function(x) { return d3.format(".2f")(100*x);}
+var percentx = x => d3.format(".2f")(100*x)
 var fixed = d3.format(".0f");
 var number = d3.format("n");
-var fixedx = function(x) { return d3.format(".0f")(km_to_m*x);}
+var fixedx = x => d3.format(".0f")(km_to_m*x)
 
 // NB: Change your number format function here:
 var format = percent;
@@ -60,7 +60,7 @@ var title = svg.append("svg:text")
     ;
 title.text(document.title);
 
-d3.json("us-counties.json", function(json) {
+d3.json("us-counties.json", json => {
   counties.selectAll("path")
       .data(json.features)
     .enter().append("svg:path")
@@ -73,18 +73,18 @@ d3.json("us-counties.json", function(json) {
     make_legend();
 });
 
-d3.json("us-states.json", function(json) {
+d3.json("us-states.json", json => {
   states.selectAll("path")
       .data(json.features)
     .enter().append("svg:path")
       .attr("d", path);
 });
 
-d3.json("county_codes.json", function(json) {
+d3.json("county_codes.json", json => {
     county_codes = json;
 });
 
-d3.json("data.json", function(json) {
+d3.json("data.json", json => {
     data = json;
 
     populate_stats(data);
@@ -108,9 +108,9 @@ function make_legend()
         .enter().append("svg:rect")
             .attr("width", 40)
             .attr("height", 20)
-            .attr("y", function(d, i){ return 30 + i*21;})
+            .attr("y", (d, i) => 30 + i*21)
             .attr("x", 10)
-            .attr("class", function(d, i){return "q" + (i+1) + "-9";})
+            .attr("class", (d, i) => "q" + (i+1) + "-9")
     ;
     
     var maxes = get_values(legend_max);
@@ -119,18 +119,18 @@ function make_legend()
         .enter().append("svg:text")
             .attr("text-anchor", "start") // text-align
             .attr("x", 50)
-            .attr("y", function(d, i){return 30 + i*21})
+            .attr("y", (d, i) => 30 + i*21)
             .attr("dx", 3) // padding-right
             .attr("dy", 12 + 4) // vertical-align: used font size (copied from css. must be a better way)
             .attr("class", "legend")
-            .text(function (d, i){return formatx(d) + " - " + format(maxes[i]);})
+            .text((d, i) => formatx(d) + " - " + format(maxes[i]))
     ;
 }
 
 function show(b)
 {
-    return function(d, i) {
-        var s = counties.selectAll("path").filter(function(g){return g.id == d.id;});
+    return (d, i) => {
+        var s = counties.selectAll("path").filter(g => g.id == d.id);
         if (b)
         {
             label.text(county_codes[d.id] + ": " + format(data[d.id] !== undefined ? data[d.id] : 0));
@@ -141,7 +141,7 @@ function show(b)
             label.text("");
             s.attr("class", quantize);
         }
-    }
+    };
 }
 
 function __quantize(f, min, max)
@@ -182,8 +182,7 @@ function quantize(d) {
     return "q" + q + "-9";
 }
 
-var get_values = function(obj)
-{
+var get_values = obj => {
     var values = [];
     for (var key in obj)
     {
@@ -193,8 +192,7 @@ var get_values = function(obj)
     return values;
 }
 
-var populate_stats = function(data)
-{
+var populate_stats = data => {
     // need sorted values for quantile
     var values = get_values(data); 
     data_quantile = d3.scale.quantile();
@@ -207,8 +205,7 @@ var populate_stats = function(data)
     data_min = d3.min(values);
 }
 
-var std = function(l)
-{
+var std = l => {
     var M = 0.0;
     var S = 0.0;
     var k = 1;
